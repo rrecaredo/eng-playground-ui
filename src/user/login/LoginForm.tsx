@@ -1,18 +1,25 @@
 import React from 'react';
-import Button from 'src/components/Button';
-import { Formik, Form, Field } from 'formik';
+import Field from 'src/components/Field';
+import { loginSchema } from '../schemas';
+import { Formik, Form } from 'formik';
 import { TextField } from 'formik-material-ui';
 import ActionArea from 'src/components/ActionArea';
+import ISignupLoginFormProps from '../signupLoginProps';
+import { LoginButton } from '../styledComponents';
+import LoadingIndicator from 'src/components/LoadingIndicator';
 
-export default class LoginForm extends React.Component {
-    render() {
-        return (
-            <Formik
-                render={() => (
+export default ({ onSubmit }: ISignupLoginFormProps) => {
+    return (
+        <Formik
+            validationSchema={loginSchema}
+            initialValues={{ username: '', password: '' }}
+            onSubmit={(v, fa) => onSubmit(v, fa)}
+            render={({ isSubmitting }) => (
+                <LoadingIndicator loading={isSubmitting}>
                     <Form>
                         <Field
-                            name="email"
-                            type="email"
+                            name="username"
+                            type="username"
                             label="Email"
                             fullWidth
                             required
@@ -26,15 +33,14 @@ export default class LoginForm extends React.Component {
                             component={TextField}
                         />
                         <ActionArea>
-                            <Button
+                            <LoginButton
                                 type="submit"
                                 variant="contained"
-                                fullWidth
-                                color="primary">Login</Button>
+                                color="primary">Login</LoginButton>
                         </ActionArea>
-                    </Form>)
-                }
-                initialValues={{ email: '' }} onSubmit={() => { }} />
-        );
-    }
+                    </Form>
+                </LoadingIndicator>
+            )}
+        />
+    );
 }

@@ -5,4 +5,5 @@ export default styled(Paper)`
   margin: 20px;
   padding: 20px;
   max-width: 350px;
+  position: relative;
 ` as React.ComponentType<any>;

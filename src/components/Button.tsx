@@ -2,6 +2,10 @@ import styled from 'styled-components';
 import { Button } from '@material-ui/core';
 import theme from '../theme';
 
+interface IProps {
+    width?: string;
+}
+
 export default styled(Button)`
     && {
         box-shadow: none;

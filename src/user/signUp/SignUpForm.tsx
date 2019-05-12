@@ -1,31 +1,25 @@
 import React from 'react';
-import { Formik, Form, FormikActions } from 'formik';
+import { Formik, Form } from 'formik';
 import { TextField } from 'formik-material-ui';
-import signupSchema from './schema';
-import { register } from '../userService';
-import IUser from '../userModel';
+import { signupSchema } from '../schemas';
 import Field from 'src/components/Field';
-import Button from 'src/components/Button';
 import ActionArea from 'src/components/ActionArea';
+import ISignupLoginFormProps from '../signupLoginProps';
+import { SignupButton } from '../styledComponents';
+import LoadingIndicator from 'src/components/LoadingIndicator';
 
-export default class SignUpForm extends React.Component {
-
-    handleSubmit(values: IUser, { setSubmitting }: FormikActions<IUser>) {
-        register(values).subscribe(console.log);
-        setSubmitting(false);
-    }
-
-    render() {
-        return (
-            <Formik
-                validationSchema={signupSchema}
-                initialValues={{ username: '', displayName: '', password: '' }}
-                onSubmit={(this.handleSubmit)}
-                render={() => (
+export default ({ onSubmit }: ISignupLoginFormProps) => {
+    return (
+        <Formik
+            validationSchema={signupSchema}
+            initialValues={{ username: '', displayName: '', password: '' }}
+            onSubmit={(v, fa) => onSubmit(v, fa)}
+            render={({ isSubmitting }) => (
+                <LoadingIndicator loading={isSubmitting}>
                     <Form>
                         <Field
                             name="username"
-                            type="email"
+                            type="username"
                             label="Email"
                             fullWidth
                             required
@@ -46,16 +40,14 @@ export default class SignUpForm extends React.Component {
                             component={TextField}
                         />
                         <ActionArea>
-                            <Button
+                            <SignupButton
                                 type="submit"
                                 variant="contained"
-                                fullWidth
-                                color="primary">Singup</Button>
+                                color="primary">Singup</SignupButton>
                         </ActionArea>
                     </Form>
-
-                )}
-            />
-        )
-    }
+                </LoadingIndicator>
+            )}
+        />
+    )
 };
